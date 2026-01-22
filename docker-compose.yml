@@ -1,0 +1,18 @@
+services:
+  worker:
+      build: ./app
+          command: ["python", "worker.py"]
+              env_file: .env
+                  volumes:
+                        - ./data:/data
+                            restart: unless-stopped
+
+                              dashboard:
+                                  build: ./app
+                                      command: ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
+                                          env_file: .env
+                                              volumes:
+                                                    - ./data:/data
+                                                        ports:
+                                                              - "8501:8501"
+                                                                  restart: unless-stopped

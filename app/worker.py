@@ -16,7 +16,7 @@ def load_last_metrics():
                 row = con.execute("SELECT metrics_json FROM snapshots ORDER BY id DESC LIMIT 1").fetchone()
                 if not row:
                               return None
-                          import json
+                  import json
                 return json.loads(row[0])
 
 

@@ -45,7 +45,7 @@ def main():
                             balances = cb.get_accounts()
                             orders = cb.list_orders(limit=50)
                             fills = cb.list_fills(limit=200)
-except Exception as e:
+        except Exception as e:
             print("Coinbase fetch error:", repr(e))
             time.sleep(settings.poll_seconds)
             continue

@@ -44,11 +44,13 @@ pip install -r app/requirements.txt
 cp .env.example .env
 nano .env
 
-# Run dashboard
-streamlit run app/dashboard.py --server.port=8501
+# Run dashboard (from app directory)
+cd app
+streamlit run dashboard.py --server.port=8501
 
-# In another terminal, run worker
-python3 -m app.worker
+# In another terminal, run worker (from app directory)
+cd app
+python3 worker.py
 ```
 
 ## Configuration

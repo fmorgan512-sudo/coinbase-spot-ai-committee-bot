@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 import json
-from app.core.db import init_db, connect
-from app.core.config import settings
-from app.core.key_store import save_keys, load_keys, keys_exist, delete_keys
+from core.db import init_db, connect
+from core.config import settings
+from core.key_store import save_keys, load_keys, keys_exist, delete_keys
 
 st.set_page_config(page_title="Coinbase AI Committee Bot", layout="wide")
 

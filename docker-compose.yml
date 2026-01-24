@@ -9,10 +9,13 @@ services:
 
   dashboard:
     build: ./app
-    command: ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    command: ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
     env_file: .env
     volumes:
       - ./data:/data
     ports:
       - "8501:8501"
     restart: unless-stopped
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false

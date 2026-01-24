@@ -1,0 +1,53 @@
+services:
+  worker:
+    build: ./app
+    command: ["python", "worker.py"]
+    env_file: .env
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import sqlite3; sqlite3.connect(\"/data/bot.sqlite3\").close()'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  dashboard:
+    build: ./app
+    command: ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    env_file: .env
+    volumes:
+      - ./data:/data
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Nginx reverse proxy with SSL
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - dashboard
+    restart: unless-stopped
+    profiles:
+      - with-ssl
